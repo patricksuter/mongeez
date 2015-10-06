@@ -13,6 +13,7 @@ package org.mongeez;
 
 import com.mongodb.Mongo;
 
+import com.mongodb.MongoClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
@@ -27,7 +28,7 @@ import org.mongeez.validation.DefaultChangeSetsValidator;
  */
 public class MongeezRunner implements InitializingBean {
     private boolean executeEnabled = false;
-    private Mongo mongo;
+    private MongoClient mongo;
     private String dbName;
     private Resource file;
 
@@ -62,11 +63,6 @@ public class MongeezRunner implements InitializingBean {
             mongeez.setChangeSetFileProvider(changeSetFileProvider);
         } else {
             mongeez.setFile(file);
-
-            if(!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(passWord)){
-            	MongoAuth auth = new MongoAuth(userName, passWord, authDb);
-                mongeez.setAuth(auth);
-            }
         }
 
         mongeez.process();
@@ -80,7 +76,7 @@ public class MongeezRunner implements InitializingBean {
         this.executeEnabled = executeEnabled;
     }
 
-    public void setMongo(Mongo mongo) {
+    public void setMongo(MongoClient mongo) {
         this.mongo = mongo;
     }
 
